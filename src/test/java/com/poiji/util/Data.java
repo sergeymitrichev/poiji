@@ -3,6 +3,7 @@ package com.poiji.util;
 import com.poiji.deserialize.model.byid.Employee;
 import com.poiji.deserialize.model.byid.Person;
 import com.poiji.deserialize.model.byid.Sample;
+import com.poiji.deserialize.model.byname.ListHolderByName;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,5 +103,20 @@ public final class Data {
         samples.add(sample1);
         samples.add(sample2);
         return samples;
+    }
+
+    public static List<ListHolderByName> unmarshallingListHolders() {
+        List<ListHolderByName> holders = new ArrayList<>();
+
+        ListHolderByName holder = new ListHolderByName();
+
+        List<String> items = new ArrayList<>();
+        items.add("item 1");
+        items.add("item 2");
+        items.add("item 3");
+
+        holder.setItems(items);
+        holders.add(holder);
+        return holders;
     }
 }

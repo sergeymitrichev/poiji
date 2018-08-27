@@ -6,9 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
 /**
  * Created by hakan on 22/01/2017.
@@ -168,6 +166,8 @@ public final class Casting {
         } else if (fieldType.isEnum()) {
             o = enumValue(value, fieldType);
 
+        } else if (fieldType.getName().equals("java.util.List")) {
+            o = value;
         } else {
             if (value.length() == 0) {
                 if (Boolean.TRUE.equals(options.preferNullOverDefault())) {
