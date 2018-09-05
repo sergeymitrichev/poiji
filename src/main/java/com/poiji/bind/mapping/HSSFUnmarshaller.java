@@ -34,14 +34,12 @@ abstract class HSSFUnmarshaller implements Unmarshaller {
     private final DataFormatter dataFormatter;
     protected final PoijiOptions options;
     private final Casting casting;
-    private Map<String, Integer> titles;
-    private Map<Integer, String> _titles;
+    private Map<Integer, String> titles;
 
     HSSFUnmarshaller(PoijiOptions options) {
         this.options = options;
         dataFormatter = new DataFormatter();
-        titles = new HashMap<String, Integer>();
-        _titles = new HashMap<Integer, String>();
+        titles = new HashMap<Integer, String>();
         casting = Casting.getInstance();
     }
 
@@ -67,8 +65,7 @@ abstract class HSSFUnmarshaller implements Unmarshaller {
         if (maxPhysicalNumberOfRows > 0) {
             Row firstRow = sheet.getRow(0);
             for (Cell cell : firstRow) {
-                titles.put(cell.getStringCellValue(), cell.getColumnIndex());
-                _titles.put(cell.getColumnIndex(), cell.getStringCellValue());
+                titles.put(cell.getColumnIndex(), cell.getStringCellValue());
             }
         }
     }
@@ -99,13 +96,11 @@ abstract class HSSFUnmarshaller implements Unmarshaller {
 
                 ExcelCellName excelCellName = field.getAnnotation(ExcelCellName.class);
                 if (excelCellName != null) {
-                    Integer titleColumn = titles.get(excelCellName.value());
-                    List<Integer> titleColumns = _titles.entrySet().stream()
+                    List<Integer> titleColumns = titles.entrySet().stream()
                             .filter(x -> x.getValue().equals(excelCellName.value()))
                             .map(Map.Entry::getKey)
                             .collect(Collectors.toList());
-
-                    titleColumns.forEach(x -> constructTypeValue(currentRow, instance, field, x));
+                    titleColumns.forEach(column -> constructTypeValue(currentRow, instance, field, column));
                 }
             }
         }
@@ -132,7 +127,7 @@ abstract class HSSFUnmarshaller implements Unmarshaller {
             field.setAccessible(true);
             List list = (List) field.get(instance);
             list.add(o);
-            setFieldData(instance, field, list);
+            field.set(instance, list);
         } catch (IllegalAccessException e) {
             throw new IllegalCastException("Unexpected cast type {" + o + "} of field" + field.getName());
         }
